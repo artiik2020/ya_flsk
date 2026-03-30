@@ -5,13 +5,15 @@ from flask import Flask, render_template, redirect, request, url_for
 from flask_restful import Api
 from forms.user import RegisterForm
 from data.users import User
-from data import db_session, news_api, jobs_api, users_resource
+from data import db_session, news_api, jobs_api, users_resource, jobs_resource
 
 app = Flask(__name__)
 api = Api(app)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 api.add_resource(users_resource.UserListResource, '/api/v2/users')
 api.add_resource(users_resource.UserResource, '/api/v2/users/<int:user_id>')
+api.add_resource(jobs_resource.JobsListResource, '/api/v2/jobs')
+api.add_resource(jobs_resource.JobsResource, '/api/v2/jobs/<int:user_id>')
 answers = {
     'title': 'Анкета',
     'surname': 'Watny',
