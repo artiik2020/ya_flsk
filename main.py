@@ -2,12 +2,16 @@ import json
 import os
 
 from flask import Flask, render_template, redirect, request, url_for
+from flask_restful import Api
 from forms.user import RegisterForm
-from app.data import db_session
-from app.data.users import User
+from data.users import User
+from data import db_session, news_api, jobs_api, users_resource
 
 app = Flask(__name__)
+api = Api(app)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
+api.add_resource(users_resource.UserListResource, '/api/v2/users')
+api.add_resource(users_resource.UserResource, '/api/v2/users/<int:user_id>')
 answers = {
     'title': 'Анкета',
     'surname': 'Watny',
@@ -18,6 +22,13 @@ answers = {
     'motivation': 'Всегда мечтал застрять на Марсе!',
     'ready': 'True'
 }
+
+
+def main():
+    db_session.global_init("db/blogs.db")
+    app.register_blueprint(news_api.blueprint)
+    app.register_blueprint(jobs_api.blueprint)
+    app.run()
 
 
 @app.route('/promotion')
@@ -424,4 +435,4 @@ def news():
 
 
 if __name__ == '__main__':
-    app.run(port=8080, host='127.0.0.1')
+    main()

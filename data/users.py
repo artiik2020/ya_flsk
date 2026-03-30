@@ -1,11 +1,11 @@
 import datetime
 import sqlalchemy
+from sqlalchemy_serializer import SerializerMixin
 from werkzeug.security import check_password_hash, generate_password_hash
+from data.db_session import SqlAlchemyBase
 
-from app.data.db_session import SqlAlchemyBase
 
-
-class User(SqlAlchemyBase):
+class User(SqlAlchemyBase, SerializerMixin):
     __tablename__ = 'users'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
